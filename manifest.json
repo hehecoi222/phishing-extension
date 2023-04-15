@@ -16,9 +16,7 @@
     }
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "page": "background.html",
     "persistent": false
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' 'wasm-eval' https://www.googletagmanager.com; object-src 'self'",
