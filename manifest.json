@@ -1,0 +1,36 @@
+{
+  "name": "URL Checker",
+  "version": "0.0.0",
+  "description": "URL checker based on WebDNN & image query",
+  "manifest_version": 2,
+  "author": "17DG-Oriented",
+  "content_scripts": [
+    {
+      "js": [
+        "content.js"
+      ],
+      "matches": [
+        "https://developer.chrome.com/docs/extensions/*",
+        "https://developer.chrome.com/docs/webstore/*"
+      ]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' 'wasm-eval' https://www.googletagmanager.com; object-src 'self'",
+  "browser_action": {
+    "default_title": "URL Checker",
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "webNavigation",
+    "https://developer.chrome.com/*"
+  ]
+}
