@@ -1,7 +1,7 @@
 {
   "name": "URL Checker",
   "version": "0.0.0",
-  "description": "URL checker based on WebDNN & image query",
+  "description": "URL checker based on requesting server model",
   "manifest_version": 2,
   "author": "17DG-Oriented",
   "content_scripts": [

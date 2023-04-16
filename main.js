@@ -11,7 +11,7 @@ chrome.tabs.query({ 'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT
     });
 
 async function getPredict(url) {
-    const response = await fetch("http://192.168.249.80:8000/predict?url=" + url);
+    const response = await fetch("http://35.208.189.92:8000/predict?url=" + url);
     const jsonData = await response.json();
     return jsonData;
 }
@@ -35,7 +35,7 @@ function getCurrentURL(tab) {
                 if (data) {
                     document.getElementById('result').innerHTML = data.message;
                     if (data.message == "Phishing") {
-                        document.getElementById('description').innerHTML = 'The result ' + currentURL + ' is ' + data.message + '! Be careful on this website!';
+                        document.getElementById('description').innerHTML = 'The result ' + currentURL + ' may be ' + data.message + '! Be careful on this website!';
                     } else {
                         document.getElementById('description').innerHTML = 'The result is ' + data.message + '!';
                     }
