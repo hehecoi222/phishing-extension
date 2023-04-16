@@ -64,7 +64,7 @@ async function main(url) {
         // it has 2 inputs: 'a'(float32, 3x4) and 'b'(float32, 4x3)
         // it has 1 output: 'c'(float32, 3x3)
         const dataA = new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-        const session = await ort.InferenceSession.create('./model-check.onnx');
+        const session = await ort.InferenceSession.create('./model.onnx');
 
         const tensorA = new ort.Tensor('string', [url, url, url, url, url, url, url, url, url, url, url, url], [3, 4]);
         const tensorB = new ort.Tensor('string', ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'], [4, 3]);
