@@ -13,10 +13,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
                 }
                 if ((currentURL) && getRootUrl(currentURL) != getRootUrl(tab)) {
                     currentURL = tab;
-                    alert(currentURL)
+                    
                 } else if (!currentURL) {
                     currentURL = tab;
-                    alert(currentURL)
+                   
                 }
             }
         }, 3000); // 3000 = delay in milliseconds (3 seconds)

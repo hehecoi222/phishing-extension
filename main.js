@@ -11,14 +11,19 @@ chrome.tabs.query({ 'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT
     });
 
 async function getPredict(url) {
-    const response = await fetch("http://localhost:5000/predict?url=" + url);
+    const response = await fetch("http://192.168.249.80:8000/predict?url=" + url);
     const jsonData = await response.json();
     return jsonData;
 }
 
+function getDomainNoHttp(url) {
+    url = url.replace(/(https?:\/\/)?(www.)?/i, '');
+
+    return url;
+}
 
 function getCurrentURL(tab) {
-    currentURL = tab;
+    currentURL = getDomainNoHttp(tab);
     document.getElementById('result').innerHTML = 'Checking...';
     document.getElementById('description').innerHTML = 'Checking ' + currentURL + '...';
     main(currentURL).then((data) => {
@@ -28,8 +33,12 @@ function getCurrentURL(tab) {
         } else {
             message = getPredict(currentURL).then((data) => {
                 if (data) {
-                    document.getElementById('result').innerHTML = data;
-                    document.getElementById('description').innerHTML = 'The result is ' + data.message + '!';
+                    document.getElementById('result').innerHTML = data.message;
+                    if (data.message == "Phishing") {
+                        document.getElementById('description').innerHTML = 'The result ' + currentURL + ' is ' + data.message + '! Be careful on this website!';
+                    } else {
+                        document.getElementById('description').innerHTML = 'The result is ' + data.message + '!';
+                    }
                 } else {
                     document.getElementById('result').innerHTML = 'Not Found';
                     document.getElementById('description').innerHTML = 'The result is Not Found! Try again later';
@@ -37,6 +46,7 @@ function getCurrentURL(tab) {
             }).catch((error) => {
                 document.getElementById('result').innerHTML = 'Not Found';
                 document.getElementById('description').innerHTML = 'The result is Not Found!, Try again later';
+                console.log(error);
             });
         }
     }
@@ -47,6 +57,7 @@ function getCurrentURL(tab) {
 // use an async context to call onnxruntime functions.
 async function main(url) {
     try {
+        throw Skip;
         // create a new session and load the specific model.
         //
         // the model in this example contains a single MatMul node
@@ -55,8 +66,8 @@ async function main(url) {
         const dataA = new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         const session = await ort.InferenceSession.create('./model-check.onnx');
 
-        const tensorA = new ort.Tensor('string', [url, url, url, url, url, url, url, url, url, url, url], [3, 4]);
-        const tensorB = new ort.Tensor('string', ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'], [4, 3]);
+        const tensorA = new ort.Tensor('string', [url, url, url, url, url, url, url, url, url, url, url, url], [3, 4]);
+        const tensorB = new ort.Tensor('string', ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'], [4, 3]);
 
         // prepare feeds. use model input names as keys.
         const feeds = { a: tensorA, b: tensorB };
@@ -69,7 +80,6 @@ async function main(url) {
         return dataC;
 
     } catch (e) {
-        alert(e);
         console.log(e);
     }
 }
